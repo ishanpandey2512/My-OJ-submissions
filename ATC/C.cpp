@@ -49,3 +49,39 @@ signed main()
 
     return 0;
 }
+
+//ITERATIVE:
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    vector<int> dp(3);
+    // dp[i] - the total cost such that we did activity i on the last considered day
+    for(int day = 0; day < n; ++day) 
+    {
+        vector<int> new_dp(3, 0); //final result till this day i is stored in this from previous dp table, later dp is updated with new_dp
+        vector<int> c(3);   // cost of all three activities this day
+
+        for(int i = 0; i < 3; ++i) 
+        {
+            scanf("%d", &c[i]);
+        }
+
+        // int a, b, c - a lot of implementation
+        for(int i = 0; i < 3; ++i) 
+        //i represents dp state from previous day: activity chosen from previous day
+        {
+            for(int j = 0; j < 3; ++j) // activity present day
+            {
+                if(i != j) //obviously activity from present day != activity past day
+                {
+                    new_dp[j] = max(new_dp[j], dp[i] + c[j]);
+                }
+            }
+        }
+        dp = new_dp;// reassign states for next iteration, it will become past day
+    }
+    printf("%d\n", max({dp[0], dp[1], dp[2]}));
+}
+
+
